@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.get("/todos", async (req, res) => {
-  console.log("hello");
+  console.log("hello world");
   const todos = await Todo.find();
   return res.status(200).json({
     todos,
@@ -49,7 +49,7 @@ mongoose.connect(
   // "mongodb://localhost:27017/todos-app", // ❌ connect ECONNREFUSED 127.0.0.1:27017
   // "mongodb://host.docker.internal:27017/todos-app", // ✔ if we are in local machine
   // "mongodb://172.17.0.2:27017/todos-app", // ✔ (172.17.0.2: mongo image ip-address)
-  "mongodb://mongodb:27017/todos-app",
+  `mongodb://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@mongodb:27017/todos-app?authSource=admin`,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,

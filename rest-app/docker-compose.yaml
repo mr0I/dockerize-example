@@ -1,0 +1,39 @@
+version: "1.00"
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    volumes:
+      - restapi_data:/data/db
+    env_file:
+      - ./env/mongo.env
+
+  backend:
+    build:
+      ./backend
+      # context: ./backend
+      # dockerfile: Dockerfile
+    container_name: backend
+    volumes:
+      - ./backend/src:/app/src
+    ports:
+      - 8000:8000
+    env_file:
+      - ./env/backend.env
+    depends_on:
+      - mongodb
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    volumes:
+      - ./frontend/src:/app/src
+    ports:
+      - 3000:3000
+    stdin_open: true # -i
+    tty: true # -t
+    depends_on:
+      - backend
+
+volumes:
+  restapi_data:
